@@ -38,7 +38,7 @@ public class BqlController {
     public @ResponseBody
     PageObj showApo(PageObj pg){
         pg.setSelectColumns("select *");//查询的列
-        pg.setSelectSql("from customer");//查询语句
+        pg.setSelectSql("from customer");//查询语句aa
         pg=baseService.getPage(pg);//获取分页数据
         return pg;//返回分页数据
     }
