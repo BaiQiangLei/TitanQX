@@ -34,7 +34,7 @@ public class BqlController {
         return bqlse.cppFind();
     }
 
-    @RequestMapping("/khFind")//方法路径
+    @RequestMapping("/khFind")//方法路径ll
     public @ResponseBody
     PageObj showApo(PageObj pg){
         pg.setSelectColumns("select *");//查询的列
