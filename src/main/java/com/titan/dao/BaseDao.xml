@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.titan.dao.BaseDao">
+	<select id="getPageList" parameterType="java.util.Map" resultType="java.util.Map">
+	    ${sql}
+	</select>
+	<select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	   ${sqlcount}
+	</select>
+	<update id="updata" parameterType="java.util.Map">
+	   ${sql}
+	</update>
+</mapper>

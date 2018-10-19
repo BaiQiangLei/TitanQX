@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.titan.dao.ZjyDao">
+    <insert id="addInComeRecord">
+        insert into incomerecord(intype,irmoney,irdate,jlwid,jldate,irps) values(
+        #{intype},#{irmoney},#{irdate},#{jlwid},SYSDATE(),#{irps}
+        )
+    </insert>
+    <select id="login_in" resultType="java.util.Map">
+        select w.*,p.poname,r.rname,r.rms,r.rtype
+        from worker w left join `level` l on l.lid=w.lid left join position p ON p.poid=l.poid left join role r ON r.rid=w.rid
+        where (w.wphone=#{user} or w.wnumber=#{user}) and w.wpwd=#{pwd} and w.state=1
+    </select>
+    <select id="getTrees" parameterType="java.lang.Integer" resultType="java.util.Map">
+        select t.* from role_tree rt inner join tree t on t.tid=rt.tid where rt.rid=#{rid}
+    </select>
+    <select id="getAllTrees"  resultType="java.util.Map">
+        select * from tree
+    </select>
+    <insert id="getId" useGeneratedKeys="true" parameterType="java.util.Map" keyColumn="theid" keyProperty="id">
+        insert into aid values()
+    </insert>
+    <update id="cutTab" parameterType="java.lang.String">
+        TRUNCATE TABLE ${table}
+    </update>
+    <select id="getCusType"  resultType="java.util.Map">
+        select * from custype
+    </select>
+    <select id="getCustomerNotVip"  resultType="java.util.Map">
+        select * from customer c left join vip v on v.cid=c.cid where vipid is NULL
+    </select>
+    <insert id="addCustomer" useGeneratedKeys="true" parameterType="java.util.Map" keyColumn="cid" keyProperty="cid">
+        insert into customer(cname,   ctid,   csex,   cdate,   caddress,   cphone,   intime,   wid,   idcard)
+        values(#{cname},
+        <if test="ctid==''">NULL</if><if test="ctid!=''">#{ctid}</if>,
+        #{csex},
+        <if test="cdate==''">NULL</if><if test="cdate!=''">#{cdate}</if>,
+        #{caddress},#{cphone},SYSDATE(),
+        <if test="wid==''">NULL</if><if test="wid!=''">#{wid}</if>,
+        <if test="idcard==''">NULL</if><if test="idcard!=''">#{idcard}</if>)
+    </insert>
+    <insert id="addVip" useGeneratedKeys="true" parameterType="java.util.Map" keyColumn="vipid" keyProperty="vipid">
+        insert into vip(cid,vipnumber,vippwd,opendate,wid,money) values
+        (#{cid},#{vipnumber},#{vippwd},SYSDATE(),
+        <if test="wid==''">NULL</if><if test="wid!=''">#{wid}</if>,0.0)
+    </insert>
+    <select id="checkIdNumber" resultType="java.util.Map" parameterType="java.lang.String">
+        select * from customer where idcard=#{idnumber}
+    </select>
+</mapper>

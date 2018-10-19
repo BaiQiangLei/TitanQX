@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	">
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 核心配置文件的位置 -->
+		<property name="configLocation" value="classpath:mybatis_config.xml" />
+	</bean>
+	<bean id="myMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.titan.dao"/>
+	</bean>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver">
+		</property>
+		<property name="url" value="jdbc:mysql://localhost:3306/titan?useSSL=true&amp;autoReconnect=true"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property>
+		<property name="initialSize" value="5"></property>
+		<!-- 连接池连接最大数量 -->
+		<property name="maxActive" value="100"></property>
+		<!-- 最大空闲值,访问过了高峰期后，连一直释放到maxIdle -->
+		<property name="maxIdle" value="10"></property>
+		<!-- 最小空闲值 ,连接池预申请minIdle连接，防止高峰期带来来不及申请 -->
+		<property name="minIdle" value="5"></property>
+		<!-- 并发时，最大等待时间 -->
+		<property name="maxWait" value="6000"></property>
+		<property name="validationQuery" value="SELECT 1"></property>
+		<property name="testWhileIdle" value="true"></property>
+		<property name="testOnBorrow" value="true"></property>
+		<property name="timeBetweenEvictionRunsMillis" value="3600000"></property>
+		<property name="numTestsPerEvictionRun" value="50"></property>
+		<property name="minEvictableIdleTimeMillis" value="120000"></property>
+		<property name="removeAbandoned" value="true"/>
+		<property name="removeAbandonedTimeout" value="6000000"/>
+	</bean>
+</beans>

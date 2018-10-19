@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.titan.dao.BqlDao">
+    <!--用户信息添加-->
+    <insert id="khAdd" useGeneratedKeys="true" keyProperty="cid" keyColumn="cid">
+      insert into customer(cname,ctid,csex,caddress,cphone,wid
+        <if test=" idcard=='' "></if>
+        <if test=" idcard !='' ">,#{idcard}</if>)
+      values (#{cname},#{ctid},#{csex},#{caddress},#{cphone},#{wid}
+        <if test=" idcard=='' "></if>
+        <if test=" idcard !='' ">,#{idcard}</if>
+        )
+    </insert>
+    <!--车辆信息添加-->
+    <insert id="qcAdd" useGeneratedKeys="true" keyProperty="carid" keyColumn="cid">
+      insert into car(carpz,cid,vin,pptid,ptid,ppid,color,engine,newkm)
+      values (#{carpz},#{cid},#{vin},
+        <if test="pptid==''">null,</if>
+        <if test="pptid!=''">#{pptid},</if>
+        <if test="ptid==''">null,</if>
+        <if test="ptid!=''">#{ptid},</if>
+        <if test="ppid==''">null,</if>
+        <if test="ppid!=''">#{ppid},</if>
+        #{color},#{engine},
+        <if test="newkm==''">null</if>
+        <if test="newkm!=''">#{newkm}</if>)
+    </insert>
+    <!--查询用户车辆-->
+    <select id="qcFind"  resultType="java.util.Map">
+      select * from customer cu JOIN car ca on cu.cid=ca.cid where cu.cid=#{cid}
+    </select>
+    <!--绑定客户默认车辆-->
+    <insert id="qcCarid">
+      update customer set defaultcid=#{carid} where cid=#{cid}
+    </insert>
+    <!--客户唯一判断-->
+    <select id="khFind_cphone" resultType="java.util.Map">
+        select * from customer where cphone=#{cphone}
+    </select>
+    <select id="khFind_idcard" resultType="java.util.Map">
+        select * from customer where idcard=#{idcard}
+    </select>
+    <!--车辆信息唯一判断-->
+    <select id="qcFind_carpz" resultType="java.util.Map">
+        select * from car where carpz=#{carpz}
+    </select>
+    <select id="qcFind_vin" resultType="java.util.Map">
+        select * from car where vin=#{vin}
+    </select>
+    <select id="qcFind_engine" resultType="java.util.Map">
+        select * from car where engine=#{engine}
+    </select>
+    <!--查询汽车品牌、类型、型号-->
+    <select id="ppFind" resultType="java.util.Map">
+       select * from carpp
+    </select>
+    <select id="cxFind" resultType="java.util.Map">
+        select * from pptype
+    </select>
+    <select id="xhFind" resultType="java.util.Map">
+        select * from ppttype
+    </select>
+    <!--查询客户类型-->
+    <select id="ctFind" resultType="java.util.Map">
+        select * from custype
+    </select>
+    <select id="wFind" resultType="java.util.Map">
+        select * from worker
+    </select>
+</mapper>
