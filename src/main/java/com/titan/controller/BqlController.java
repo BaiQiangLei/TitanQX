@@ -25,6 +25,7 @@ public class BqlController {
     public @ResponseBody Map khAdd(ParamObj param) throws ParseException {
         System.out.println(param.getMap().get("idcard"));
         Map i=bqlse.khAdd(param.getMap());
+        System.out.println("1111");
         System.out.println(i.toString());
         return i;
     }
